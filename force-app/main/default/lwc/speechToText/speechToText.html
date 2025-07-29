@@ -1,0 +1,53 @@
+<template>
+
+    <div class="speech-container">
+
+        <!-- Show detected object -->
+        <template if:true={objectApiName}>
+            <h2><strong> {objectApiName}</strong> </h2>
+        </template>
+
+        <!-- Field Selection -->
+        <div class="selection-container">
+            <!-- Field Selection -->
+            <template if:true={fields.length}>
+                <label for="field-select">Select a Field:</label>
+                <select id="field-select" onchange={handleFieldChange}>
+                    <option value="">-- Select Field --</option>
+                    <template for:each={fields} for:item="field">
+                        <option key={field.value} value={field.value}>{field.label}</option>
+                    </template>
+                </select>
+            </template>
+        
+            <!-- Language Selection -->
+            <label for="language-select">Select Language:</label>
+            <select id="language-select" onchange={handleLanguageChange}>
+                <template for:each={languageOptions} for:item="lang">
+                    <option key={lang.value} value={lang.value}>{lang.label}</option>
+                </template>
+            </select>
+        </div>
+
+      
+
+        <div class="actions">
+            <button class="start" onclick={handleStart} disabled={isRecording}>Start</button>
+            <button class="stop" onclick={handleStop} disabled={isNotRecording}>Stop</button>
+            <button class="clear" onclick={handleClear}>Clear</button>
+            <button class="save" onclick={handleSave} >Save</button>
+        </div>
+
+        <div class="status">
+            <template if:true={isRecording}>
+                <p>🎙️ Recording...</p>
+            </template>
+            <template if:true={isNotRecording}>
+                <p>🔴 Not Recording</p>
+            </template>
+            <p class="error">{errorMessage}</p>
+        </div>
+
+        <textarea readonly>{recognizedText}</textarea>
+    </div>
+</template>
